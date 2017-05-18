@@ -1,5 +1,6 @@
 <?php
-header("Content-Type: text/html; charset=utf-8");
+     ini_set( 'display_errors', 1 ); 
+    header("Content-Type: text/html; charset=utf-8");
     $name     = $_POST["name"];
     $pass     = $_POST["pass"];
     $user     = 'root';
@@ -8,24 +9,15 @@ header("Content-Type: text/html; charset=utf-8");
     $host     = 'localhost';
     $port     = 3306;
 
-    $link = mysql_connect("$host:$port", $user, $password);
-    if(!$link){
-        die("failed to connect mysql ");
+    try{
+        $pdo       = new PDO("mysql:host=".$host.";dbname=".$db.";charset=utf8mb4", $user, $password);
+        $statement = $pdo->prepare("insert into `secure_users` (`name`, `pass`) values (?, ?);");
+        $statement->execute(array($name, $pass));
+        $pdo = null;
+    }catch(PDOExeption $e){
+        //echo $e->getMessage()."</br>";
+        echo "データベースエラー";
     }
-    $db_selected = mysql_select_db($db, $link);
-    if (!$db_selected){
-        die('failed to connect db ');
-    }
-    mysql_set_charset('utf8');
-    $query = "INSERT INTO `secure_users` (`name`, `pass`) VALUES ('". $name. "', '". $pass. "');";
-    $result = mysql_query($query);
-    //echo $query;
-    if(!$result){
-        die('faild query ');
-    }
-   
-    $close_flag = mysql_close($link);
-
 ?>
 <body>
     <p>登録しました</p>
