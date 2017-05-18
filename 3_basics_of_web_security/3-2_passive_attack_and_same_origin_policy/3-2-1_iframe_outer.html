@@ -1,0 +1,21 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>フレーム間の読み出し</title>
+</head>
+<body>
+    <iframe name="iframe1" width="300" height="80" src="3-2-2_iframe_inner.html"></iframe></br>
+    <script>
+        function go(){
+            try{
+                var pass = iframe1.document.form1.password.value;
+                document.getElementById('out').innerHTML = pass;
+            } catch(e) {
+                alert(e.message);
+            }
+        }
+    </script>
+    <input type="button" onclick="go();" value="パスワード" />
+    <span id="out"></span>
+</body>
+</html>
